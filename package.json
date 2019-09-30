@@ -6,16 +6,31 @@
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@babel/runtime": "^7.6.2",
     "graphql": "^14.5.6",
     "graphql-tag": "^2.10.1",
     "isomorphic-fetch": "^2.2.1"
   },
   "devDependencies": {
+    "@babel/cli": "^7.6.2",
+    "@babel/core": "^7.6.2",
+    "@babel/plugin-proposal-object-rest-spread": "^7.6.2",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.2",
     "ava": "^2.4.0",
     "axios": "^0.19.0",
+    "babel-eslint": "^10.0.3",
+    "semistandard": "^14.2.0",
     "test-listen": "^1.1.0"
   },
   "scripts": {
+    "build": "babel src -d ./lib",
+    "fix": "semistandard --fix src test.js",
+    "lint": "semistandard src test.js",
+    "prepare": "npm run build",
     "test": "ava"
+  },
+  "semistandard": {
+    "parser": "babel-eslint"
   }
 }
