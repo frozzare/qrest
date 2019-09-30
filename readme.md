@@ -45,7 +45,7 @@ Data object:
 */
 ```
 
-To return all fields for a object, simply write `users { _ }` with a underscore as field.
+To return all fields for a object, simply write `users { _ }` with a underscore as a field.
 
 ## Usage
 
