@@ -2,7 +2,7 @@
 
 > work in progress
 
-qrest is a http client that concat multiple rest api requests and queries which fields that should be returned using graphql. It only works with rest api requests that returns JSON. All things that works in graphql will not work qrest.
+qrest is a http client that concat multiple rest api requests and queries which fields that should be returned using graphql. It only works with rest api requests that returns JSON. All things that works in graphql will not work qrest, e.g fragments, mutation, variables and directives.
 
 ## Example
 
