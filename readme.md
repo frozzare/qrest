@@ -2,7 +2,7 @@
 
 > work in progress
 
-qrest is a http client that concat multiple rest api requests and queries which fields that should be returned using graphql. It only works with JSON rest api requests.
+qrest is a http client that concat multiple rest api requests and queries which fields that should be returned using graphql. It only works with rest api requests that returns JSON.
 
 ## Examples
 
@@ -58,7 +58,7 @@ const query = `
     }
 `;
 
-const data = await qrest.configure().fetch('https://reqres.in/api', query)
+const data = await qrest.fetch('https://reqres.in/api', query)
 
 /*
 
