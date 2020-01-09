@@ -40,14 +40,14 @@ test.after.always(t => {
   t.context.server.close();
 });
 
-test('fetch single query data', async t => {
+test('get single query data', async t => {
   const query = `
         users {
             page
         }
     `;
 
-  const actual = await qrest.fetch(t.context.baseURL, query);
+  const actual = await qrest.get(t.context.baseURL, query);
   const expected = {
     users: {
       page: 1
@@ -57,7 +57,24 @@ test('fetch single query data', async t => {
   t.deepEqual(expected, actual);
 });
 
-test('fetch multiple query data', async t => {
+test('post single query data', async t => {
+  const query = `
+        users {
+            page
+        }
+    `;
+
+  const actual = await qrest.post(t.context.baseURL, query);
+  const expected = {
+    users: {
+      page: 1
+    }
+  };
+
+  t.deepEqual(expected, actual);
+});
+
+test('get multiple query data', async t => {
   const query = `
         users {
             page
@@ -69,7 +86,7 @@ test('fetch multiple query data', async t => {
         }
     `;
 
-  const actual = await qrest.fetch(t.context.baseURL, query);
+  const actual = await qrest.get(t.context.baseURL, query);
   const expected = {
     users: {
       page: 1
@@ -88,7 +105,7 @@ test('fetch multiple query data', async t => {
   t.deepEqual(expected, actual);
 });
 
-test('fetch dynamic query name', async t => {
+test('get dynamic query name', async t => {
   const query = `
         currentPost {
             data {
@@ -103,7 +120,7 @@ test('fetch dynamic query name', async t => {
     }
   });
 
-  const acutal = await qrest.fetch(t.context.baseURL, query);
+  const acutal = await qrest.get(t.context.baseURL, query);
   const expected = {
     currentPost: {
       data: {
@@ -124,7 +141,7 @@ test('use graphql arguments as query strings', async t => {
     }
   `;
 
-  const acutal = await qrest.fetch(t.context.baseURL, query);
+  const acutal = await qrest.get(t.context.baseURL, query);
   const expected = {
     posts: {
       data: {
@@ -158,7 +175,7 @@ test('axios dynamic query name', async t => {
     return res.data;
   });
 
-  const acutal = await qrest.fetch(t.context.baseURL, query);
+  const acutal = await qrest.get(t.context.baseURL, query);
   const expected = {
     currentPost: {
       data: {

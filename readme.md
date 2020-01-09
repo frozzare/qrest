@@ -29,7 +29,7 @@ const data = await qrest.configure({
             }
         }
     })
-    .fetch('https://reqres.in/api', query)
+    .get('https://reqres.in/api', query)
 /*
 
 Data object:
@@ -58,7 +58,7 @@ const query = `
     }
 `;
 
-const data = await qrest.fetch('https://reqres.in/api', query)
+const data = await qrest.get('https://reqres.in/api', query)
 
 /*
 
@@ -79,10 +79,15 @@ Data object:
 */
 ```
 
-To add options to fetch request, simply pass it a third argument:
+Request API:
 
 ```js
-qrest.fetch(url, query, options)
+qrest.get(url, query, options)
+qrest.post(url, query, options)
+qrest.put(url, query, options)
+qrest.patch(url, query, options)
+qrest.head(url, query, options)
+qrest.delete(url, query, options)
 ```
 
 To support older browsers we recommend to use [isomorphic-unfetch](https://github.com/developit/unfetch/tree/master/packages/isomorphic-unfetch), a minimal polyfill for fetch which allows for usage on both client and server.
