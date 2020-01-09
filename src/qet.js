@@ -1,5 +1,44 @@
 const gql = require('graphql-tag');
 
+/**
+ * Flatten array.
+ *
+ * @param {array} list
+ *
+ * @return {array}
+ */
+const flattenArray = list =>
+  list.reduce((a, b) => a.concat(Array.isArray(b) ? flattenArray(b) : b), []);
+
+/**
+ * Encode objects as query strings.
+ *
+ * @param {object} params
+ * @param {string} prefix
+ *
+ * @return {string}
+ */
+const qsEncode = (params, prefix) => {
+    const query = Object.keys(params).map(key => {
+      const isArray = params.constructor === Array;
+      const value = isArray ? flattenArray(params)[key] : params[key];
+
+      if (isArray) {
+        key = `${prefix}[]`;
+      } else if (params.constructor === Object) {
+        key = prefix ? `${prefix}[${key}]` : key;
+      }
+
+      if (typeof value === 'object') {
+        return qsEncode(value, key);
+      }
+
+      return `${key}=${encodeURIComponent(value)}`;
+    });
+
+    return [].concat.apply([], query).join('&');
+  };
+
 class Qet {
     /**
      * Qet constructor.
@@ -38,6 +77,7 @@ class Qet {
     mapSelection(s) {
         const out = {
             key: s.name.value,
+            arguments: s.arguments,
             children: [],
         };
 
@@ -106,14 +146,21 @@ class Qet {
         for (let i = 0, l = query.length; i < l; i++) {
             const row = query[i];
             const key = row.key;
-            const endpoint = this.endpoint(key);
+
+            // Map graphql arguments to query string object.
+            let qs = {};
+            row.arguments.forEach(arg => {
+                qs[arg.name.value] = arg.value.value;
+            });
+
+            const url = this._getUrl(key, qs);
             const endParams = this._configure[key] ? this._configure[key] : {};
 
             if (endParams.path) {
                 delete endParams.path;
             }
 
-            const dat = await this._request(endpoint, {
+            const dat = await this._request(url, {
                 ...params,
                 ...endParams,
             });
@@ -145,15 +192,21 @@ class Qet {
      * Create endpoint.
      *
      * @param {string} path
+     * @param {object} qs
      *
      * @return {string}
      */
-    endpoint(path) {
+    _getUrl(path, qs = {}) {
         if (this._configure[path] && this._configure[path].path) {
             path = this._configure[path].path;
         }
 
-        return this.url.replace(/\/$/, '') + '/' + path.replace(/^\/+/g, '');
+        let id = qs.id ? '/' + qs.id : '';
+        delete qs.id;
+
+        qs = qsEncode(qs);
+
+        return this.url.replace(/\/$/, '') + '/' + path.replace(/^\/+/g, '') + id + (qs ? '?' + qs : '');
     }
 }
 

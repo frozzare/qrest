@@ -3,7 +3,7 @@ require('isomorphic-fetch');
 const http = require('http');
 const test = require('ava');
 const listen = require('test-listen');
-const qet = require('./lib/qet');
+const qet = require('./src/qet');
 const axios = require('axios');
 
 const server = (req, res) => {
@@ -106,6 +106,27 @@ test('fetch dynamic query name', async t => {
   const acutal = await qet.fetch(t.context.baseURL, query);
   const expected = {
     currentPost: {
+      data: {
+        name: 'cerulean'
+      }
+    }
+  };
+
+  t.deepEqual(expected, acutal);
+});
+
+test('use graphql arguments as query strings', async t => {
+  const query = `
+    posts(id: 1) {
+        data {
+            name
+        }
+    }
+  `;
+
+  const acutal = await qet.fetch(t.context.baseURL, query);
+  const expected = {
+    posts: {
       data: {
         name: 'cerulean'
       }

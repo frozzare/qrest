@@ -47,6 +47,38 @@ Data object:
 
 To return all fields for a object, simply write `users { _ }` with a underscore as a field.
 
+You can also use graphql arguments as query strings, expect for `id` argument that is added to the url as a path:
+
+```js
+const query = `
+    posts(id: 1) {
+        data {
+            name
+        }
+    }
+`;
+
+const data = await qet.configure().fetch('https://reqres.in/api', query)
+
+/*
+
+Data object:
+
+{
+  posts: {
+    data: {
+      id: 1,
+      name: 'cerulean',
+      year: 2000,
+      color: '#98B2D1',
+      pantone_value: '15-4020'
+    }
+  }
+}
+
+*/
+```
+
 ## Usage
 
 Qet uses [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) under the hood.
