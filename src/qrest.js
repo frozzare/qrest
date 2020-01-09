@@ -49,8 +49,8 @@ class qrest {
     constructor() {
         this.mapSelection = this.mapSelection.bind(this);
         this._configure = {};
-        this._request = async (url, params) => {
-            return await (await fetch(url, params)).json();
+        this._request = async (url, options) => {
+            return await (await fetch(url, options)).json();
         };
     }
 
@@ -114,7 +114,7 @@ class qrest {
     }
 
     /**
-     * Configure aliases and custom headers and params for each request.
+     * Configure aliases and custom headers and options for each request.
      *
      * {
      *   'currentPost': {
@@ -128,24 +128,35 @@ class qrest {
      * @param {object} obj
      */
     configure(obj) {
-        this._configure = Object.assign(this._configure, obj);
+        this._configure = {
+            ...this._configure,
+            ...obj
+        };
+
         return this;
     }
 
     /**
-     * Fetch data from endpoints and concat it.
+     * Fetch data from endpoints and concat multiple
+     * rest api requests and queries which fields
+     * that should be returned.
+     *
+     * @param {string} url
+     * @param {string} query
+     * @param {object} options
      *
      * @return {object}
      */
-    async fetch(url, query, params = {}) {
-        this.url = url;
+    async fetch(url, query, options = {}) {
         const data = {};
 
+        this.url = url;
         query = this.parse(query);
 
         for (let i = 0, l = query.length; i < l; i++) {
             const row = query[i];
             const key = row.key;
+            const config = this._configure[key] ? this._configure[key] : {};
 
             // Map graphql arguments to query string object.
             let qs = {};
@@ -154,15 +165,11 @@ class qrest {
             });
 
             const url = this._getUrl(key, qs);
-            const endParams = this._configure[key] ? this._configure[key] : {};
-
-            if (endParams.path) {
-                delete endParams.path;
-            }
+            delete config.path;
 
             const dat = await this._request(url, {
-                ...params,
-                ...endParams,
+                ...options,
+                ...config,
             });
 
             // Include all fields if first key is a underscore.
@@ -201,12 +208,15 @@ class qrest {
             path = this._configure[path].path;
         }
 
-        let id = qs.id ? '/' + qs.id : '';
+        const id = qs.id ? '/' + qs.id : '';
         delete qs.id;
-
         qs = qsEncode(qs);
 
-        return this.url.replace(/\/$/, '') + '/' + path.replace(/^\/+/g, '') + id + (qs ? '?' + qs : '');
+        const safeURL = this.url.replace(/\/$/, '') + '/';
+        const safePath = path.replace(/^\/+/g, '') + id;
+        const safeQuery = qs ? '?' + qs : '';
+
+        return safeURL + safePath + safeQuery;
     }
 }
 

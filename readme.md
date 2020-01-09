@@ -90,9 +90,9 @@ To change to another http client:
 ```js
 const axios = require('axios');
 
-qrest.request(async (url, params) => {
+qrest.request(async (url, options) => {
     const res = await axios({
-        ...params,
+        ...options,
         url: url,
     });
 
