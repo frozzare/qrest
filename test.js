@@ -1,3 +1,5 @@
+require('isomorphic-fetch');
+
 const http = require('http');
 const test = require('ava');
 const listen = require('test-listen');

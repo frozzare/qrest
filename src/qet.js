@@ -1,5 +1,3 @@
-require('isomorphic-fetch');
-
 const gql = require('graphql-tag');
 
 class Qet {
@@ -110,7 +108,11 @@ class Qet {
             const key = row.key;
             const endpoint = this.endpoint(key);
             const endParams = this._configure[key] ? this._configure[key] : {};
-            if (endParams.path) delete endParams.path;
+
+            if (endParams.path) {
+                delete endParams.path;
+            }
+
             const dat = await this._request(endpoint, {
                 ...params,
                 ...endParams,
