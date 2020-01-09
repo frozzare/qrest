@@ -4,32 +4,24 @@
 
 qrest is a http client that concat multiple rest api requests and queries which fields that should be returned using graphql. It only works with rest api requests that returns JSON. All things that works in graphql will not work qrest.
 
-## Docs
+## Example
 
 ```js
 const query = `
-    currentPost {
-        data {
-            name
-        }
+  currentPost: posts(id: 1) {
+    data {
+      name
     }
-    posts {
-        data
-    }
-    users {
-        page
-    }
+  }
+  posts {
+    data
+  }
+  users {
+    page
+  }
 `;
 
-const data = await qrest.configure({
-        'currentPost': {
-            path: '/posts/1',
-            headers: {
-                'x-custom-header': 'true'
-            }
-        }
-    })
-    .get('https://reqres.in/api', query)
+const data = await qrest.get('https://reqres.in/api', query)
 /*
 
 Data object:
@@ -47,7 +39,32 @@ Data object:
 
 To return all fields for a object, simply write `users { _ }` with a underscore as a field.
 
-You can also use graphql arguments as query strings, expect for `id` argument that is added to the url as a path:
+### Configure
+
+You can configure custom headers and options for query objects using `configure`
+
+```js
+qrest.configure({
+  'currentPost': {
+    path: '/posts/1',
+    headers: {
+      'x-custom-header': 'true'
+    }
+  }
+})
+
+const query = `
+  currentPost {
+    data {
+      name
+    }
+  }
+`
+```
+
+### Query arguments
+
+Query arguments will be converted to query strings, expect for `id` argument that is added to the url as a path:
 
 ```js
 const query = `
@@ -79,7 +96,39 @@ Data object:
 */
 ```
 
-Request aliases:
+### Query alias
+
+```js
+const query = `
+    currentPost: posts(id: 1) {
+        data {
+            name
+        }
+    }
+`;
+
+const data = await qrest.get('https://reqres.in/api', query)
+
+/*
+
+Data object:
+
+{
+  currentPost: {
+    data: {
+      id: 1,
+      name: 'cerulean',
+      year: 2000,
+      color: '#98B2D1',
+      pantone_value: '15-4020'
+    }
+  }
+}
+
+*/
+```
+
+### Request aliases:
 
 ```js
 qrest.get(url, query, options)
