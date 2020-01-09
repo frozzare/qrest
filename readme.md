@@ -4,7 +4,7 @@
 
 qrest is a http client that concat multiple rest api requests and queries which fields that should be returned using graphql. It only works with rest api requests that returns JSON.
 
-## Examples
+## Docs
 
 ```js
 const query = `
@@ -79,12 +79,10 @@ Data object:
 */
 ```
 
-## Usage
+To add options to fetch request, simply pass it a third argument:
 
 ```js
-qrest.request(async (url, params) => {
-    return await (await fetch(url, params)).json();
-});
+qrest.fetch(url, query, options)
 ```
 
 To change to another http client:
