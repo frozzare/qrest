@@ -204,8 +204,13 @@ class qrest {
    */
   _parse(input) {
     const q = gql(`{ ${input} }`);
+    let selections = q.definitions[0].selectionSet.selections
 
-    return q.definitions[0].selectionSet.selections.map(this._mapSelection)
+    if (selections[0].name.value === 'query') {
+      selections = selections[0].selectionSet.selections
+    }
+
+    return selections.map(this._mapSelection).filter(s => s);
   }
 
   /**
