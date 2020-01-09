@@ -111,11 +111,13 @@ class qrest {
         ...config,
       });
 
+      const dataKey = row.alias ? row.alias : row.key;
+
       // Include all fields if first key is a underscore.
       if (row.children[0].key === '_') {
-        data[key] = dat;
+        data[dataKey] = dat;
       } else {
-        data[key] = this._mapChildren(dat, {}, row.children);
+        data[dataKey] = this._mapChildren(dat, {}, row.children);
       }
     }
 
@@ -155,6 +157,7 @@ class qrest {
    */
   _mapSelection(s) {
     const out = {
+      alias: s.alias ? s.alias.value : '',
       key: s.name.value,
       arguments: s.arguments,
       children: [],

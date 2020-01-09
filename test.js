@@ -74,6 +74,23 @@ test('post single query data', async t => {
   t.deepEqual(expected, actual);
 });
 
+test('get single query data with graphql alias', async t => {
+  const query = `
+        heros: users {
+            page
+        }
+    `;
+
+  const actual = await qrest.post(t.context.baseURL, query);
+  const expected = {
+    heros: {
+      page: 1
+    }
+  };
+
+  t.deepEqual(expected, actual);
+});
+
 test('get multiple query data', async t => {
   const query = `
         users {
