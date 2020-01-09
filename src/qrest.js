@@ -39,7 +39,7 @@ const qsEncode = (params, prefix) => {
     return [].concat.apply([], query).join('&');
   };
 
-class Qet {
+class qrest {
     /**
      * Qet constructor.
      *
@@ -210,4 +210,4 @@ class Qet {
     }
 }
 
-module.exports = new Qet;
+module.exports = new qrest;

@@ -1,8 +1,8 @@
-## Qet
+## qrest
 
 > work in progress
 
-Qet is a http client that concat multiple requests and queries which fields that should be returned.
+qrest is a http client that concat multiple requests and queries which fields that should be returned.
 
 ## Examples
 
@@ -21,7 +21,7 @@ const query = `
     }
 `;
 
-const data = await qet.configure({
+const data = await qrest.configure({
         'currentPost': {
             path: '/posts/1',
             headers: {
@@ -58,7 +58,7 @@ const query = `
     }
 `;
 
-const data = await qet.configure().fetch('https://reqres.in/api', query)
+const data = await qrest.configure().fetch('https://reqres.in/api', query)
 
 /*
 
@@ -81,10 +81,8 @@ Data object:
 
 ## Usage
 
-Qet uses [isomorphic-fetch](https://www.npmjs.com/package/isomorphic-fetch) under the hood.
-
 ```js
-qet.request(async (url, params) => {
+qrest.request(async (url, params) => {
     return await (await fetch(url, params)).json();
 });
 ```
@@ -94,7 +92,7 @@ To change to another http client:
 ```js
 const axios = require('axios');
 
-qet.request(async (url, params) => {
+qrest.request(async (url, params) => {
     const res = await axios({
         ...params,
         url: url,

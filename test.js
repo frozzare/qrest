@@ -3,7 +3,7 @@ require('isomorphic-fetch');
 const http = require('http');
 const test = require('ava');
 const listen = require('test-listen');
-const qet = require('./src/qet');
+const qrest = require('./src/qrest');
 const axios = require('axios');
 
 const server = (req, res) => {
@@ -47,7 +47,7 @@ test('fetch single query data', async t => {
         }
     `;
 
-  const actual = await qet.fetch(t.context.baseURL, query);
+  const actual = await qrest.fetch(t.context.baseURL, query);
   const expected = {
     users: {
       page: 1
@@ -69,7 +69,7 @@ test('fetch multiple query data', async t => {
         }
     `;
 
-  const actual = await qet.fetch(t.context.baseURL, query);
+  const actual = await qrest.fetch(t.context.baseURL, query);
   const expected = {
     users: {
       page: 1
@@ -97,13 +97,13 @@ test('fetch dynamic query name', async t => {
         }
     `;
 
-  qet.configure({
+  qrest.configure({
     currentPost: {
       path: '/posts/1'
     }
   });
 
-  const acutal = await qet.fetch(t.context.baseURL, query);
+  const acutal = await qrest.fetch(t.context.baseURL, query);
   const expected = {
     currentPost: {
       data: {
@@ -124,7 +124,7 @@ test('use graphql arguments as query strings', async t => {
     }
   `;
 
-  const acutal = await qet.fetch(t.context.baseURL, query);
+  const acutal = await qrest.fetch(t.context.baseURL, query);
   const expected = {
     posts: {
       data: {
@@ -145,7 +145,7 @@ test('axios dynamic query name', async t => {
         }
     `;
 
-  qet.configure({
+  qrest.configure({
     currentPost: {
       path: '/posts/1'
     }
@@ -158,7 +158,7 @@ test('axios dynamic query name', async t => {
     return res.data;
   });
 
-  const acutal = await qet.fetch(t.context.baseURL, query);
+  const acutal = await qrest.fetch(t.context.baseURL, query);
   const expected = {
     currentPost: {
       data: {
