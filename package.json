@@ -1,7 +1,7 @@
 {
-  "name": "qrest",
+  "name": "@frozzare/qrest",
   "version": "1.0.0",
-  "description": "qrest is a http client that concat multiple requests and queries which fields that should be returned",
+  "description": "qrest is a http client that concat multiple requests and queries which fields that should be returned using graphql",
   "main": "index.js",
   "author": "Fredrik Forsmo <fredrik.forsmo@gmail.com>",
   "license": "MIT",
