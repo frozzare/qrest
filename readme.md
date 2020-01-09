@@ -85,6 +85,8 @@ To add options to fetch request, simply pass it a third argument:
 qrest.fetch(url, query, options)
 ```
 
+To support older browsers we recommend to use [isomorphic-unfetch](https://github.com/developit/unfetch/tree/master/packages/isomorphic-unfetch), a minimal polyfill for fetch which allows for usage on both client and server.
+
 To change to another http client:
 
 ```js
@@ -99,5 +101,3 @@ qrest.request(async (url, options) => {
     return res.data;
 });
 ```
-
-To support older browsers we recommend to use [isomorphic-unfetch](https://github.com/developit/unfetch/tree/master/packages/isomorphic-unfetch), a minimal polyfill for fetch which allows for usage on both client and server.
