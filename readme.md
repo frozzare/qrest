@@ -79,7 +79,7 @@ Data object:
 */
 ```
 
-Request API:
+Request aliases:
 
 ```js
 qrest.get(url, query, options)
