@@ -8,16 +8,18 @@ qrest is a http client that concat multiple rest api requests and queries which 
 
 ```js
 const query = `
-  currentPost: posts(id: 1) {
-    data {
-      name
+  {
+    currentPost: posts(id: 1) {
+      data {
+        name
+      }
     }
-  }
-  posts {
-    data
-  }
-  users {
-    page
+    posts {
+      data
+    }
+    users {
+      page
+    }
   }
 `;
 
@@ -37,6 +39,8 @@ Data object:
 */
 ```
 
+qrest also support `query` operation type.
+
 To return all fields for a object, simply write `users { _ }` with a underscore as a field.
 
 ### Configure
@@ -54,9 +58,11 @@ qrest.configure({
 })
 
 const query = `
-  currentPost {
-    data {
-      name
+  {
+    currentPost {
+      data {
+        name
+      }
     }
   }
 `
@@ -68,11 +74,13 @@ Query arguments will be converted to query strings, expect for `id` argument tha
 
 ```js
 const query = `
+  {
     posts(id: 1) {
-        data {
-            name
-        }
+      data {
+        name
+      }
     }
+  }
 `;
 
 const data = await qrest.get('https://reqres.in/api', query)
@@ -100,11 +108,13 @@ Data object:
 
 ```js
 const query = `
+  {
     currentPost: posts(id: 1) {
-        data {
-            name
-        }
+      data {
+        name
+      }
     }
+  }
 `;
 
 const data = await qrest.get('https://reqres.in/api', query)
@@ -147,11 +157,11 @@ To change to another http client:
 const axios = require('axios');
 
 qrest.request(async (url, options) => {
-    const res = await axios({
-        ...options,
-        url: url,
-    });
+  const res = await axios({
+    ...options,
+    url: url,
+  });
 
-    return res.data;
+  return res.data;
 });
 ```

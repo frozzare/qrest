@@ -42,8 +42,10 @@ test.after.always(t => {
 
 test('get single query data', async t => {
   const query = `
-      users {
-        page
+      {
+        users {
+          page
+        }
       }
     `;
 
@@ -59,8 +61,10 @@ test('get single query data', async t => {
 
 test('post single query data', async t => {
   const query = `
-      users {
-        page
+      {
+        users {
+          page
+        }
       }
     `;
 
@@ -76,24 +80,7 @@ test('post single query data', async t => {
 
 test('get single query data with graphql alias', async t => {
   const query = `
-      heros: users {
-        page
-      }
-    `;
-
-  const actual = await qrest.post(t.context.baseURL, query);
-  const expected = {
-    heros: {
-      page: 1
-    }
-  };
-
-  t.deepEqual(expected, actual);
-});
-
-test('get single query data with query operation type', async t => {
-  const query = `
-      query {
+      {
         heros: users {
           page
         }
@@ -112,6 +99,7 @@ test('get single query data with query operation type', async t => {
 
 test('get multiple query data', async t => {
   const query = `
+    {
       users {
         page
       }
@@ -120,6 +108,7 @@ test('get multiple query data', async t => {
           name
         }
       }
+    }
     `;
 
   const actual = await qrest.get(t.context.baseURL, query);
@@ -143,9 +132,11 @@ test('get multiple query data', async t => {
 
 test('get dynamic query name', async t => {
   const query = `
-      currentPost {
-        data {
-          name
+      {
+        currentPost {
+          data {
+            name
+          }
         }
       }
     `;
@@ -170,9 +161,11 @@ test('get dynamic query name', async t => {
 
 test('use graphql arguments as query strings', async t => {
   const query = `
-    posts(id: 1) {
-      data {
-        name
+    {
+      posts(id: 1) {
+        data {
+          name
+        }
       }
     }
   `;
@@ -191,9 +184,11 @@ test('use graphql arguments as query strings', async t => {
 
 test('axios dynamic query name', async t => {
   const query = `
-      currentPost {
-        data {
-          name
+      {
+        currentPost {
+          data {
+           name
+          }
         }
       }
     `;

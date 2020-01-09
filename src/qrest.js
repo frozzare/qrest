@@ -203,7 +203,7 @@ class qrest {
    * @return {array}
    */
   _parse(input) {
-    const q = gql(`{ ${input} }`);
+    const q = gql(`${input}`);
     let selections = q.definitions[0].selectionSet.selections;
 
     // support query operation type.
